@@ -235,6 +235,11 @@ public :: &
    glutleavegamemode, &
    glutgamemodeget
 #endif
+#ifdef FREEGLUT
+public :: &
+   glutleavemainloop, &
+   glutsetoption 
+#endif
 
 !-----------------------------------
 ! Public entities from other modules
@@ -403,6 +408,11 @@ private :: &
    f9xglutentergamemode, &
    f9xglutleavegamemode, &
    f9xglutgamemodeget
+#endif
+#ifdef FREEGLUT
+private :: &
+   f9xglutleavemainloop, &
+   f9xglutsetoption
 #endif
 
 !-------------------
@@ -584,6 +594,13 @@ integer(kind=glint), parameter, public :: GLUT_GAME_MODE_DISPLAY_CHANGED = 6
 #endif
 #ifdef OLDNULLFUNC
 integer(kind=glint), parameter, public :: GLUTNULLFUNC = 1
+#endif
+
+#ifdef FREEGLUT
+integer(kind=glenum), parameter, public :: GLUT_ACTION_ON_WINDOW_CLOSE = 505
+integer(kind=glint), parameter, public :: GLUT_ACTION_EXIT  = 0
+integer(kind=glint), parameter, public :: GLUT_ACTION_GLUTMAINLOOP_RETURNS = 1
+integer(kind=glint), parameter, public :: GLUT_ACTION_CONTINUE_EXECUTION = 2
 #endif
 
 !-----------------
@@ -772,6 +789,16 @@ end interface
 interface glutmainloop
    module procedure f9xglutmainloop
 end interface
+
+#ifdef FREEGLUT
+interface glutleavemainloop
+   module procedure f9xglutleavemainloop
+end interface
+
+interface glutsetoption
+   module procedure f9xglutsetoption
+end interface
+#endif
 
 interface glutmenustatefunc
    module procedure f9xglutmenustatefunc
@@ -1694,6 +1721,20 @@ subroutine f9xglutmainloop()
 call fglutmainloop()
 return
 end subroutine f9xglutmainloop
+
+#ifdef FREEGLUT
+subroutine f9xglutleavemainloop()
+call fglutleavemainloop()
+return
+end subroutine f9xglutleavemainloop
+
+subroutine f9xglutsetoption(option,value)
+integer(kind=glenum) INTENT_IN option
+integer(kind=glcint) INTENT_IN value
+call fglutsetoption(option,value)
+return
+end subroutine f9xglutsetoption
+#endif
 
 #ifdef OLDNULLFUNC
 

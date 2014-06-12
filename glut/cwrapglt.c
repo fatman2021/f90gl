@@ -107,6 +107,11 @@
 #define __glutSetFCB glut_Set_FCB
 #endif
 
+#ifdef FREEGLUT
+GLUTAPI void* APIENTRY __glutGetTimerFCB(int which, int num, int *value);
+GLUTAPI void APIENTRY __glutSetTimerFCB(int which, void *func, int num, int *value);
+#endif
+
 /* The patches for GLUT 3.6 used character strings instead of constants for
    the "which" argument to __glut[Get|Set]FCB */
 
@@ -379,6 +384,10 @@ typedef void (GLUTCALLBACKFCB *GLUTidleFCBUSR) (void);
 #define fglutEnterGameMode             fglutentergamemode
 #define fglutLeaveGameMode             fglutleavegamemode
 #define fglutGameModeGet               fglutgamemodeget
+#ifdef FREEGLUT
+#define fglutLeaveMainLoop             fglutleavemainloop
+#define fglutSetOption                 fglutsetoption
+#endif
 #endif
 #elif FNAME==UNDERSCORE
 #define myglutCompareFuncs             myglutcomparefuncs_
@@ -521,6 +530,10 @@ typedef void (GLUTCALLBACKFCB *GLUTidleFCBUSR) (void);
 #define fglutEnterGameMode             fglutentergamemode_
 #define fglutLeaveGameMode             fglutleavegamemode_
 #define fglutGameModeGet               fglutgamemodeget_
+#ifdef FREEGLUT
+#define fglutLeaveMainLoop             fglutleavemainloop_
+#define fglutSetOption                 fglutsetoption_
+#endif
 #endif
 #elif FNAME==UPPERCASE
 #define myglutCompareFuncs             MYGLUTCOMPAREFUNCS
@@ -663,6 +676,10 @@ typedef void (GLUTCALLBACKFCB *GLUTidleFCBUSR) (void);
 #define fglutEnterGameMode             FGLUTENTERGAMEMODE
 #define fglutLeaveGameMode             FGLUTLEAVEGAMEMODE
 #define fglutGameModeGet               FGLUTGAMEMODEGET
+#endif
+#ifdef FREEGLUT
+#define fglutLeaveMainLoop             FGLUTLEAVEMAINLOOP
+#define fglutSetOption                 FGLUTSETOPTION
 #endif
 #endif
 
@@ -1081,6 +1098,18 @@ void APIENTRY fglutMainLoop( void )
    glutMainLoop();
 }
 
+#ifdef FREEGLUT
+void APIENTRY fglutLeaveMainLoop( void )
+{
+   glutLeaveMainLoop();
+}
+
+void APIENTRY fglutSetOption( f90glenum option, f90glcint value )
+{
+   glutSetOption( (GLenum) *option, (int) *value);
+}
+#endif
+
 void GLUTCALLBACK fortranMenuStateWrapper(int state)
 {
     (*fmenustate)(&state);
@@ -1484,14 +1513,25 @@ void APIENTRY fglutTabletMotionFunc(GLUTtabletMotionFCBUSR tabletmotion)
 
 void GLUTCALLBACK fortranTimerWrapper(int value)
 {
+#ifdef FREEGLUT
+  int num;
+  ((GLUTtimerFCBUSR)__glutGetTimerFCB(GLUT_TMP_TIMER,value,&num))(&num);
+#else
   ((GLUTtimerFCBUSR)__glutGetFCB(GLUT_TMP_TIMER))(&value);
+#endif
 }
- 
+
 void APIENTRY fglutTimerFunc(unsigned int *msecs, GLUTtimerFCBUSR func,
                              int *value)
 {
+#ifdef FREEGLUT
+    int num;
+    __glutSetTimerFCB(GLUT_TMP_TIMER,(void *)func, *value, &num);
+    glutTimerFunc(*msecs, fortranTimerWrapper, num);
+#else
     glutTimerFunc(*msecs, fortranTimerWrapper, *value);
     __glutSetFCB(GLUT_TMP_TIMER,(void *)func);
+#endif
 }
 
 void APIENTRY fglutUseLayer( f90glenum layer )
