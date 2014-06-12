@@ -1,7 +1,7 @@
 # Many of the macros are inherited from the makefile in the parent directory
 
-library: cwrapglt.o fwrapglt.o intrfglt.o
-	$(MAKELIB) lib$(LIBNAME)f90glut.a cwrapglt.o fwrapglt.o intrfglt.o
+library: cwrapglt.o fwrapglt.o intrfglt.o glut_fcb.o
+	$(MAKELIB) lib$(LIBNAME)f90glut.a glut_fcb.o cwrapglt.o fwrapglt.o intrfglt.o
 	$(RANLIB) lib$(LIBNAME)f90glut.a
 
 install: library
@@ -22,6 +22,9 @@ intrfglt.f90: intrfglt.fpp fppr.inc
 
 cwrapglt.o: cwrapglt.c fppr.inc
 	$(CC) $(CFLAGS) $(OGLINC) $(X11INC) -c cwrapglt.c
+
+glut_fcb.o: glut_fcb.c
+	$(CC) $(CFLAGS) $(OGLINC)  -c glut_fcb.c
 
 fppr.inc: ../gl/fppr.inc
 	cp -f ../gl/fppr.inc fppr.inc

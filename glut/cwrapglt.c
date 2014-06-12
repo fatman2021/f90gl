@@ -48,7 +48,7 @@
    and what finally made it into GLUT 3.7.  This flag selects which to use. The
    old forms will probably be removed sometime well after GLUT 3.7 release */
 
-#if (GLUT_XLIB_IMPLEMENTATION < 14)
+#if (GLUT_XLIB_IMPLEMENTATION < 14 )
 #define TMP_GLUT_VERSION 36
 #else
 #define TMP_GLUT_VERSION 37
@@ -102,7 +102,7 @@
 #endif
 
 /* The patches for GLUT 3.6 used a different name for get/set FCB */
-#if (TMP_GLUT_VERSION == 36)
+#if (TMP_GLUT_VERSION == 36 && FREEGLUT<1)
 #define __glutGetFCB glut_Get_FCB
 #define __glutSetFCB glut_Set_FCB
 #endif
@@ -110,7 +110,7 @@
 /* The patches for GLUT 3.6 used character strings instead of constants for
    the "which" argument to __glut[Get|Set]FCB */
 
-#if (TMP_GLUT_VERSION == 36)
+#if (TMP_GLUT_VERSION == 36 && FREEGLUT<1)
 /* for GLUT 3.6 */
 #define GLUT_TMP_DISPLAY         "display"
 #define GLUT_TMP_RESHAPE         "reshape"
@@ -1606,7 +1606,7 @@ void APIENTRY fglutWireTorus( f90gldouble innerRadius,
 #ifdef GLUT37
 /* GLUT 3.7 */
 
-#if (TMP_GLUT_VERSION == 36)
+#if (TMP_GLUT_VERSION == 36  && FREEGLUT<1)
 /* for the old GLUT, provide dummies */
 
 void APIENTRY f9y1glutKeyboardUpFunc()
