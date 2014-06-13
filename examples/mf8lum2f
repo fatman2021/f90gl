@@ -26,7 +26,7 @@ X11LIB = -lXaw -lXt -lXmu -lXi -lXext -lX11 -lm
 MODS = -I../include/GL
 
 # fortran 90 compiler and compiler flags
-F90 = gfortran
+F90 = ifort
 # -fno-range-check prevents an overflow when setting the sign bit on one-byte
 # integers
 F90FLAGS = -O -fno-range-check

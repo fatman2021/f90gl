@@ -46,8 +46,8 @@ MAKELIB = ar rcv
 RANLIB = ranlib
 
 # fortran 90 compiler and compiler flags
-F90 = gfortran
-F90FLAGS = -O
+F90 = ifort
+F90FLAGS = -O2
 
 # C compiler and compiler flags
 CC = gcc
