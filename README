@@ -1,4 +1,4 @@
-This is f90gl Version 1.2.15
+This is f90gl Version 1.2.15 patched to work with freeglut
 
 f90gl is a public domain implementation of the official Fortran 90 bindings
 for OpenGL and GLU, and the application of those bindings to GLUT.
