@@ -32,7 +32,7 @@
 #include <windows.h>
 #endif
 
-#if defined(MACOSX)
+#if defined(MACOSX)  && !defined(FREEGLUT)
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
