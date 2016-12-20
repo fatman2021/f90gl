@@ -3,8 +3,12 @@
 #ifdef FREEGLUT
 
 /* #include "glutint.h" */
+#if defined(MACOSX)
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
 #include <malloc.h>
-#include "GL/glut.h"
+#endif
 #include "stdio.h"
 
 /* environments that don't want to use APIENTRY */

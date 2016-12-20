@@ -15,7 +15,11 @@
    (mitchell@cam.nist.gov) in developing this friend interface
    for use by the f90gl package.  See ../../README.fortran */
 
+#if defined(MACOSX)
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif
 #define GLUTCALLBACK
 //#define APIENTRY
 # define GLUTAPI extern
